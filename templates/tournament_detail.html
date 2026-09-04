@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h2>{{ tournament.name }}</h2>
+
+    <p>
+      {{ tournament.event_date.month }}/{{ tournament.event_date.day }}
+    </p>
+  </div>
+
+  <div class="actions">
+    <a
+      class="button secondary tournament-action"
+      href="/tournaments/{{ tournament.id }}/edit"
+    >
+      大会情報を編集
+    </a>
+
+    <a
+      class="button secondary tournament-action"
+      href="/tournaments/{{ tournament.id }}/results/new?event_type=individual"
+    >
+      個人戦を追加
+    </a>
+
+    <a
+      class="button secondary tournament-action"
+      href="/tournaments/{{ tournament.id }}/results/new?event_type=team"
+    >
+      団体戦を追加
+    </a>
+  </div>
+</div>
+
+
+<section class="card banquet-sheet">
+
+  <h1>
+    {{ tournament.name }}
+    （{{ tournament.event_date.month }}/{{ tournament.event_date.day }}）
+  </h1>
+
+
+  {% if individual_sections %}
+
+  <h2>個人戦</h2>
+
+  <p class="center">
+    以下敬称略
+  </p>
+
+
+  {% for section in individual_sections %}
+
+  <div class="player-result">
+
+    <div class="player-result-heading">
+      <h3>
+        {{ section.player }}（{{ section.heading }}）
+      </h3>
+
+      {% if section.entries %}
+      <a
+        class="button secondary small player-edit-button"
+        href="/tournaments/{{ tournament.id }}/individual-results/edit?player_name={{ section.player | urlencode }}"
+      >
+        編集
+      </a>
+      {% endif %}
+    </div>
+
+
+    <div class="individual-match-list">
+
+      {% for entry in section.entries %}
+
+      <div class="individual-match-row">
+
+        <span class="individual-round">
+          {{ entry.individual_round or loop.index }}回戦目
+        </span>
+
+
+        <span class="individual-result-text">
+
+          {% if entry.result in ["walkover_win", "walkover_loss"] %}
+
+            {{ outcome_text(entry) }}
+
+          {% else %}
+
+            {{ entry.opponent_name }} に{{ outcome_text(entry) }}
+
+          {% endif %}
+
+
+          {% if entry.detail %}
+            （{{ entry.detail }}）
+          {% endif %}
+
+        </span>
+
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  {% endfor %}
+
+  {% endif %}
+
+
+  {% for item in team_events %}
+
+  <div class="team-result">
+
+    <h2>
+      {{ item.event.round_name or "男子団体戦" }}
+    </h2>
+
+
+    <p class="team-overall-result">
+      結果：{{ item.event.team_round }}回戦
+
+      {% if item.result_label == "勝ち" %}
+        勝利
+      {% elif item.result_label == "負け" %}
+        敗退
+      {% else %}
+        引き分け
+      {% endif %}
+    </p>
+
+
+    <p class="center">
+      {{ item.event.team_round }}回戦スコア
+    </p>
+
+
+    <div class="team-score-sheet">
+
+      <div class="team-header">
+        <div class="team-name home-team-name">
+          電通大
+        </div>
+
+        <div></div>
+
+        <div class="team-name away-team-name">
+          {{ item.event.opponent_team }}
+        </div>
+      </div>
+
+
+      <div class="team-match-list">
+
+        {% for entry in item.event.entries %}
+
+        {% set sides = entry.detail.split("-") %}
+
+        <div class="team-match-row">
+
+          <div class="team-home-player">
+
+            <span class="team-position">
+              {{ entry.position }}
+            </span>
+
+            <span class="team-player-name">
+              {{ entry.player_name }}
+            </span>
+
+          </div>
+
+
+          <div class="team-center-score">
+
+            {% if entry.result == "draw" %}
+
+              <span class="team-draw-text">
+                引き
+              </span>
+
+              <span class="team-score-separator">
+                -
+              </span>
+
+              <span class="team-draw-text">
+                分け
+              </span>
+
+            {% else %}
+
+              <span class="home-technique">
+                {{ sides[0] if sides | length > 0 else "" }}
+              </span>
+
+              <span class="team-score-separator">
+                -
+              </span>
+
+              <span class="away-technique">
+                {{ sides[1] if sides | length > 1 else "" }}
+              </span>
+
+            {% endif %}
+
+          </div>
+
+
+          <div class="team-away-player">
+            {{ entry.opponent_name }}
+          </div>
+
+        </div>
+
+        {% endfor %}
+
+      </div>
+
+
+      <div class="team-total-row">
+
+        <div class="team-total home-total">
+          {{ item.wins }}/{{ item.points_for }}
+        </div>
+
+        <div class="team-score-separator">
+          -
+        </div>
+
+        <div class="team-total away-total">
+          {{ item.losses }}/{{ item.points_against }}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="result-actions">
+
+      <a
+        class="button secondary"
+        href="/events/{{ item.event.id }}/edit"
+      >
+        編集
+      </a>
+
+
+      <form
+        method="post"
+        action="/events/{{ item.event.id }}/delete"
+        onsubmit="return confirm('この団体戦結果を削除しますか？');"
+      >
+        <button
+          type="submit"
+          class="danger small"
+        >
+          削除
+        </button>
+      </form>
+
+    </div>
+
+  </div>
+
+  {% endfor %}
+
+
+  {% if not individual_sections and not team_events %}
+
+  <p class="muted center">
+    まだ結果がありません。上のボタンから追加してください。
+  </p>
+
+  {% endif %}
+
+</section>
+
+
+<form
+  method="post"
+  action="/tournaments/{{ tournament.id }}/delete"
+  onsubmit="return confirm('大会と登録済み結果をすべて削除しますか？');"
+>
+  <button
+    type="submit"
+    class="danger"
+  >
+    大会全体を削除
+  </button>
+</form>
+
+{% endblock %}

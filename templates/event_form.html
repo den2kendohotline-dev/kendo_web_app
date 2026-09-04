@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h2>
+      {{ tournament.name }}：
+      {{ "団体戦" if event_type == "team" else "個人戦" }}
+      結果を追加
+    </h2>
+  </div>
+
+  <div class="tabs">
+    <a
+      class="button {{ 'primary' if event_type == 'team' else 'secondary' }}"
+      href="/tournaments/{{ tournament.id }}/results/new?event_type=team"
+    >
+      団体戦
+    </a>
+
+    <a
+      class="button {{ 'primary' if event_type == 'individual' else 'secondary' }}"
+      href="/tournaments/{{ tournament.id }}/results/new?event_type=individual"
+    >
+      個人戦
+    </a>
+  </div>
+</div>
+
+
+<form
+  method="post"
+  action="/tournaments/{{ tournament.id }}/results"
+  id="eventForm"
+>
+
+  <input
+    type="hidden"
+    name="event_type"
+    value="{{ event_type }}"
+  >
+
+
+  {% if event_type == "team" %}
+
+  <section class="card">
+    <h3>団体戦情報</h3>
+
+    <div class="grid">
+
+      <label>
+        団体戦名
+
+        <select
+          name="round_name"
+          required
+        >
+          <option value="男子団体戦">
+            男子団体戦
+          </option>
+
+          <option value="女子団体戦">
+            女子団体戦
+          </option>
+        </select>
+      </label>
+
+
+      <label>
+        回戦
+
+        <input
+          type="number"
+          name="team_round"
+          min="1"
+          required
+          value="1"
+        >
+      </label>
+
+
+      <label class="full">
+        対戦校
+
+        <input
+          type="text"
+          name="opponent_team"
+          required
+          placeholder="例：工学院大"
+        >
+      </label>
+
+    </div>
+  </section>
+
+  {% endif %}
+
+
+  <section class="card">
+
+    <div class="section-head">
+      <h3>試合結果</h3>
+
+      <button
+        type="button"
+        id="addRow"
+        class="secondary"
+      >
+        ＋ 行を追加
+      </button>
+    </div>
+
+
+    <div id="rows"></div>
+
+  </section>
+
+
+  <div class="sticky-actions">
+
+    <button
+      type="submit"
+      class="primary large"
+    >
+      この大会に追加
+    </button>
+
+  </div>
+
+</form>
+
+
+<template id="rowTemplate">
+
+  <div class="match-row">
+
+    {% if event_type == "team" %}
+
+    <label>
+      役割
+
+      <select
+        name="position"
+        required
+      >
+        <option value="">
+          選択してください
+        </option>
+
+        <option value="先鋒">先鋒</option>
+        <option value="次鋒">次鋒</option>
+        <option value="五将">五将</option>
+        <option value="中堅">中堅</option>
+        <option value="三将">三将</option>
+        <option value="副将">副将</option>
+        <option value="大将">大将</option>
+      </select>
+    </label>
+
+    {% else %}
+
+    <label>
+      回戦
+
+      <input
+        type="number"
+        name="individual_round"
+        min="1"
+        required
+        value="1"
+      >
+    </label>
+
+    {% endif %}
+
+
+    <label>
+      本学選手
+
+      <select
+        name="player_name"
+        required
+      >
+        <option value="">
+          選択してください
+        </option>
+
+        {% for player in players %}
+
+        <option value="{{ player.name }}">
+          {{ player.name }}
+          {% if current_grade(player) %}
+            （{{ current_grade(player) }}）
+          {% endif %}
+        </option>
+
+        {% endfor %}
+      </select>
+    </label>
+
+
+    {% if event_type == "team" %}
+
+    <label>
+      相手選手
+    
+      <input
+        type="text"
+        name="opponent_name"
+        placeholder="例：神山"
+      >
+    </label>
+    
+    {% else %}
+    
+    <label>
+      相手選手・所属
+    
+      <input
+        type="text"
+        name="opponent_name"
+        placeholder="例：神山（電通大）"
+      >
+    </label>
+    
+    {% endif %}
+
+
+    <label>
+      勝敗
+
+      <select
+        name="result"
+        class="result-select"
+      >
+        <option value="win">勝ち</option>
+        <option value="loss">負け</option>
+        <option value="draw">引き分け</option>
+        <option value="walkover_win">不戦勝</option>
+        <option value="walkover_loss">不戦敗</option>
+      </select>
+    </label>
+
+
+    <label>
+      本数
+
+      <span class="score">
+
+        <input
+          type="number"
+          name="score_for"
+          min="0"
+          max="2"
+          value="0"
+        >
+
+        <b>－</b>
+
+        <input
+          type="number"
+          name="score_against"
+          min="0"
+          max="2"
+          value="0"
+        >
+
+      </span>
+    </label>
+
+
+    <label class="wide">
+      技の表記
+
+      <input
+        type="text"
+        name="detail"
+        placeholder="例：コ-、ココ-コ、-メメ、分け"
+      >
+    </label>
+
+
+    <button
+      type="button"
+      class="danger remove-row"
+    >
+      削除
+    </button>
+
+  </div>
+
+</template>
+
+
+{% endblock %}

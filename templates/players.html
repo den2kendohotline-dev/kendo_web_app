@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+
+  <div>
+    <h2>選手登録</h2>
+
+  
+  </div>
+
+</div>
+
+
+<section class="card">
+
+  <form
+    method="post"
+    action="/players"
+    class="grid"
+  >
+
+    <label>
+      選手名
+
+      <input
+        type="text"
+        name="name"
+        required
+        placeholder="例：神山遼太郎"
+      >
+    </label>
+
+
+    <label>
+      入学年度
+    
+      <input
+        type="number"
+        name="enrollment_year"
+        min="2000"
+        max="2100"
+        step="1"
+        required
+        placeholder="例：2026"
+      >
+    </label>
+
+
+    <label class="full">
+      備考
+
+      <input
+        type="text"
+        name="note"
+        placeholder="例：主将"
+      >
+    </label>
+
+
+    <div>
+
+      <button
+        type="submit"
+        class="primary"
+      >
+        登録する
+      </button>
+
+    </div>
+
+  </form>
+
+</section>
+
+
+<section class="card">
+
+  <h3>登録済み選手</h3>
+
+  {% if players %}
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>氏名</th>
+          <th>学年</th>
+          <th>備考</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+      {% for player in players %}
+
+        <tr>
+
+          <td>{{ player.name }}</td>
+
+          <td>{{ current_grade(player) or "－" }}</td>
+
+          <td>{{ player.note or "－" }}</td>
+
+          <td>
+
+            <form
+              method="post"
+              action="/players/{{ player.id }}/delete"
+              onsubmit="return confirm('削除しますか？');"
+            >
+
+              <button
+                type="submit"
+                class="danger small-button"
+              >
+                削除
+              </button>
+
+            </form>
+
+          </td>
+
+        </tr>
+
+      {% endfor %}
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  {% else %}
+
+  <p class="muted">
+    登録選手はいません。
+  </p>
+
+  {% endif %}
+
+</section>
+
+{% endblock %}

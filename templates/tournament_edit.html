@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h2>大会情報を編集</h2>
+
+    <p>
+      大会名と開催日を変更できます。
+    </p>
+  </div>
+
+  <a
+    href="/tournaments/{{ tournament.id }}"
+    class="button secondary"
+  >
+    大会ページへ戻る
+  </a>
+</div>
+
+
+<form
+  method="post"
+  action="/tournaments/{{ tournament.id }}/edit"
+>
+
+  <section class="card">
+
+    <div class="grid">
+
+      <label class="full">
+        大会名
+
+        <input
+          type="text"
+          name="name"
+          required
+          value="{{ tournament.name }}"
+          placeholder="例：関東理工科学生剣道大会"
+        >
+      </label>
+
+
+      <label>
+        開催日
+
+        <input
+          type="date"
+          name="event_date"
+          required
+          value="{{ tournament.event_date.strftime('%Y-%m-%d') }}"
+        >
+      </label>
+
+    </div>
+
+  </section>
+
+
+  <div class="sticky-actions">
+
+    <a
+      href="/tournaments/{{ tournament.id }}"
+      class="button secondary large"
+    >
+      キャンセル
+    </a>
+
+    <button
+      type="submit"
+      class="primary large"
+    >
+      変更を保存
+    </button>
+
+  </div>
+
+</form>
+
+{% endblock %}

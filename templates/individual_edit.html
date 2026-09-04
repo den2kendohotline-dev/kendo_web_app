@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h2>
+      {{ tournament.name }}：個人戦結果を編集
+    </h2>
+
+    <p>
+      {{ player_name }}の登録済み試合をまとめて編集します。
+    </p>
+  </div>
+
+  <a
+    href="/tournaments/{{ tournament.id }}"
+    class="button secondary"
+  >
+    大会ページへ戻る
+  </a>
+</div>
+
+
+<form
+  method="post"
+  action="/tournaments/{{ tournament.id }}/individual-results/edit"
+  id="eventForm"
+>
+
+  <input
+    type="hidden"
+    name="original_player_name"
+    value="{{ player_name }}"
+  >
+
+
+  <section class="card">
+
+    <div class="section-head">
+      <h3>試合結果</h3>
+
+      <button
+        type="button"
+        id="addRow"
+        class="secondary"
+      >
+        ＋ 行を追加
+      </button>
+    </div>
+
+
+    <div id="rows">
+
+      {% for entry in entries %}
+
+      <div class="match-row">
+
+        <label>
+          回戦
+
+          <input
+            type="number"
+            name="individual_round"
+            min="1"
+            required
+            value="{{ entry.individual_round }}"
+          >
+        </label>
+
+
+        <label>
+          本学選手
+
+          <select
+            name="player_name"
+            required
+          >
+            <option value="">
+              選択してください
+            </option>
+
+            {% for player in players %}
+
+            <option
+              value="{{ player.name }}"
+              {% if entry.player_name == player.name %}
+                selected
+              {% endif %}
+            >
+              {{ player.name }}
+
+              {% if current_grade(player) %}
+                （{{ current_grade(player) }}）
+              {% endif %}
+            </option>
+
+            {% endfor %}
+          </select>
+        </label>
+
+
+        <label>
+          相手選手・所属
+
+          <input
+            name="opponent_name"
+            value="{{ entry.opponent_name }}"
+            placeholder="例：阪本（東京工科大学）"
+          >
+        </label>
+
+
+        <label>
+          勝敗
+
+          <select name="result">
+
+            <option
+              value="win"
+              {% if entry.result == "win" %}
+                selected
+              {% endif %}
+            >
+              勝ち
+            </option>
+
+            <option
+              value="draw"
+              {% if entry.result == "draw" %}
+                selected
+              {% endif %}
+            >
+              引き分け
+            </option>
+
+            <option
+              value="loss"
+              {% if entry.result == "loss" %}
+                selected
+              {% endif %}
+            >
+              負け
+            </option>
+
+            <option
+              value="walkover_win"
+              {% if entry.result == "walkover_win" %}
+                selected
+              {% endif %}
+            >
+              不戦勝
+            </option>
+
+            <option
+              value="walkover_loss"
+              {% if entry.result == "walkover_loss" %}
+                selected
+              {% endif %}
+            >
+              不戦敗
+            </option>
+
+          </select>
+        </label>
+
+
+        <label>
+          本数
+
+          <span class="score">
+
+            <input
+              type="number"
+              name="score_for"
+              min="0"
+              max="2"
+              value="{{ entry.score_for }}"
+            >
+
+            <b>－</b>
+
+            <input
+              type="number"
+              name="score_against"
+              min="0"
+              max="2"
+              value="{{ entry.score_against }}"
+            >
+
+          </span>
+        </label>
+
+
+        <label class="wide">
+          技の表記
+
+          <input
+            name="detail"
+            value="{{ entry.detail }}"
+            placeholder="例：コ-、ココ-コ、-メメ"
+          >
+        </label>
+
+
+        <button
+          type="button"
+          class="danger remove-row"
+        >
+          削除
+        </button>
+
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+  </section>
+
+
+  <div class="sticky-actions">
+
+    <a
+      href="/tournaments/{{ tournament.id }}"
+      class="button secondary large"
+    >
+      キャンセル
+    </a>
+
+    <button
+      type="submit"
+      class="primary large"
+    >
+      変更を保存
+    </button>
+
+  </div>
+
+</form>
+
+
+<!--
+  行追加用のひな形です。
+  フォームの外側に置いているので、
+  追加される前の空欄データは送信されません。
+-->
+<div
+  id="rowTemplate"
+  hidden
+>
+
+  <div class="match-row">
+
+    <label>
+      回戦
+
+      <input
+        type="number"
+        name="individual_round"
+        min="1"
+        required
+        placeholder="1"
+      >
+    </label>
+
+
+    <label>
+      本学選手
+
+      <select
+        name="player_name"
+        required
+      >
+        <option value="">
+          選択してください
+        </option>
+
+        {% for player in players %}
+
+        <option
+          value="{{ player.name }}"
+          {% if player.name == player_name %}
+            selected
+          {% endif %}
+        >
+          {{ player.name }}
+
+          {% if current_grade(player) %}
+            （{{ current_grade(player) }}）
+          {% endif %}
+        </option>
+
+        {% endfor %}
+      </select>
+    </label>
+
+
+    <label>
+      相手選手・所属
+
+      <input
+        name="opponent_name"
+        placeholder="例：阪本（東京工科大学）"
+      >
+    </label>
+
+
+    <label>
+      勝敗
+
+      <select name="result">
+        <option value="win">勝ち</option>
+        <option value="draw">引き分け</option>
+        <option value="loss">負け</option>
+        <option value="walkover_win">不戦勝</option>
+        <option value="walkover_loss">不戦敗</option>
+      </select>
+    </label>
+
+
+    <label>
+      本数
+
+      <span class="score">
+
+        <input
+          type="number"
+          name="score_for"
+          min="0"
+          max="2"
+          value="0"
+        >
+
+        <b>－</b>
+
+        <input
+          type="number"
+          name="score_against"
+          min="0"
+          max="2"
+          value="0"
+        >
+
+      </span>
+    </label>
+
+
+    <label class="wide">
+      技の表記
+
+      <input
+        name="detail"
+        placeholder="例：コ-、ココ-コ、-メメ"
+      >
+    </label>
+
+
+    <button
+      type="button"
+      class="danger remove-row"
+    >
+      削除
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+  const rows = document.getElementById("rows");
+  const addRowButton = document.getElementById("addRow");
+  const rowTemplate = document.getElementById("rowTemplate");
+
+  addRowButton.addEventListener("click", function () {
+    const templateRow =
+      rowTemplate.querySelector(".match-row");
+
+    if (!templateRow) {
+      return;
+    }
+
+    const newRow =
+      templateRow.cloneNode(true);
+
+    rows.appendChild(newRow);
+  });
+
+  rows.addEventListener("click", function (event) {
+    const removeButton =
+      event.target.closest(".remove-row");
+
+    if (!removeButton) {
+      return;
+    }
+
+    const row =
+      removeButton.closest(".match-row");
+
+    if (row) {
+      row.remove();
+    }
+  });
+</script>
+
+{% endblock %}

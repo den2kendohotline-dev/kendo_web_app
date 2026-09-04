@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h2>{{ event.tournament }}</h2>
+    <p>{{ event.event_date }}・{{ "団体戦" if event.event_type == "team" else "個人戦" }}</p>
+  </div>
+  <form method="post" action="/events/{{ event.id }}/delete" onsubmit="return confirm('この試合結果を削除しますか？')">
+    <button class="danger">削除</button>
+  </form>
+</div>
+
+<section class="card">
+<div class="meta-grid">
+  <div><span>会場</span><strong>{{ event.venue or "未入力" }}</strong></div>
+  <div><span>試合区分</span><strong>{{ event.round_name or "未入力" }}</strong></div>
+  {% if event.event_type == "team" %}<div><span>対戦相手</span><strong>{{ event.opponent_team }}</strong></div>{% endif %}
+</div>
+</section>
+
+<section class="card">
+<h3>試合内容</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>{{ "役割" if event.event_type == "team" else "回戦" }}</th>
+  <th>本学選手</th><th>勝敗</th><th>本数</th><th>相手選手</th><th>メモ</th>
+</tr>
+</thead>
+<tbody>
+{% for entry in event.entries %}
+<tr>
+  <td>{{ entry.position if event.event_type == "team" else entry.individual_round }}</td>
+  <td>{{ entry.player_name }}</td>
+  <td>{{ "○" if entry.result == "win" else "×" if entry.result == "loss" else "△" }}</td>
+  <td>{{ entry.score_for }}－{{ entry.score_against }}</td>
+  <td>{{ entry.opponent_name }}</td>
+  <td>{{ entry.detail }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="card">
+<div class="section-head"><h3>OB・OG向け報告文</h3><button type="button" class="secondary" data-copy-target="report">コピー</button></div>
+<textarea id="report" readonly>{{ report }}</textarea>
+</section>
+{% endblock %}

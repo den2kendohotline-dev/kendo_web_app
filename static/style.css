@@ -1,0 +1,846 @@
+/* ==========================================
+   カラーテーマ
+========================================== */
+
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #d1d5db;
+  --accent: #111827;
+  --danger: #b91c1c;
+}
+
+
+/* ==========================================
+   基本設定
+========================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+}
+
+
+/* ==========================================
+   ヘッダー
+========================================== */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  padding: 16px;
+
+  background: var(--accent);
+  color: #ffffff;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+header p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+
+/* ==========================================
+   ナビゲーション
+========================================== */
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+nav form {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+nav a,
+.link-button {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0;
+  border: 0;
+
+  background: none;
+  color: #ffffff;
+
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   メイン領域
+========================================== */
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+
+/* ==========================================
+   見出し
+========================================== */
+
+h2,
+h3 {
+  margin-top: 0;
+}
+
+
+/* ==========================================
+   カード
+========================================== */
+
+.card {
+  margin-bottom: 16px;
+  padding: 18px;
+
+  background: var(--card);
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================
+   ページ上部
+========================================== */
+
+.page-head,
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+
+  margin-bottom: 16px;
+}
+
+.page-head h2,
+.page-head p {
+  margin: 0;
+}
+
+.page-head p {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.actions,
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+
+/* ==========================================
+   ボタン
+========================================== */
+
+button,
+.button {
+  display: inline-block;
+
+  padding: 10px 14px;
+
+  border: 0;
+  border-radius: 9px;
+
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: var(--text);
+}
+
+.danger {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+.large {
+  padding: 13px 20px;
+}
+
+.small {
+  padding: 5px 10px;
+}
+
+.small-button {
+  padding: 6px 9px;
+}
+
+
+/* ==========================================
+   ボタンのホバー
+========================================== */
+
+.page-head .actions .button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.page-head .actions .button.primary:hover {
+  background: #374151;
+  color: #ffffff;
+}
+
+.page-head .actions .button.secondary:hover {
+  background: #cbd5e1;
+  color: #111827;
+}
+
+.page-head .actions .button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ==========================================
+   フォーム
+========================================== */
+
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: grid;
+  gap: 5px;
+
+  color: var(--muted);
+  font-size: 13px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+
+  border: 1px solid var(--line);
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: var(--text);
+
+  font: inherit;
+}
+
+textarea {
+  min-height: 330px;
+  line-height: 1.6;
+}
+
+.narrow {
+  max-width: 430px;
+  margin: 50px auto;
+}
+
+.sticky-actions {
+  position: sticky;
+  bottom: 0;
+
+  padding: 12px 0;
+
+  background: rgba(244, 246, 248, 0.94);
+  text-align: right;
+}
+
+
+/* ==========================================
+   テーブル
+========================================== */
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 11px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  text-align: left;
+  white-space: nowrap;
+}
+
+.pill {
+  padding: 4px 9px;
+
+  background: #eef2f7;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   試合入力
+========================================== */
+
+.match-row {
+  display: grid;
+  grid-template-columns:
+    100px
+    1.2fr
+    1.2fr
+    100px
+    110px
+    1.3fr
+    62px;
+  gap: 9px;
+  align-items: end;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.score input {
+  min-width: 45px;
+}
+
+.wide {
+  min-width: 150px;
+}
+
+
+/* ==========================================
+   補助テキスト
+========================================== */
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+}
+
+.center {
+  text-align: center;
+}
+
+
+/* ==========================================
+   メタ情報
+========================================== */
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.meta-grid div {
+  display: grid;
+  gap: 4px;
+}
+
+.meta-grid span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   納会資料全体
+========================================== */
+
+.banquet-sheet {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px;
+
+  background: #ffffff;
+}
+
+.banquet-sheet > h1 {
+  margin: 20px 0 44px;
+
+  text-align: center;
+  text-decoration: underline;
+  font-size: 1.8rem;
+}
+
+.banquet-sheet > h2 {
+  margin: 0 0 18px;
+
+  text-align: center;
+  font-size: 1.45rem;
+}
+
+.center {
+  text-align: center;
+}
+
+
+/* ==========================================
+   個人戦の納会資料表示
+========================================== */
+
+.player-result {
+  position: relative;
+
+  max-width: 620px;
+  margin: 38px auto;
+}
+
+.player-result-heading {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.player-result-heading h3 {
+  display: inline-block;
+
+  margin: 0;
+  padding: 0 8px 2px;
+
+  border-bottom: 1px solid var(--text);
+
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.player-edit-button {
+  position: absolute;
+  right: 0;
+}
+
+.individual-match-list {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.individual-match-row {
+    display: grid;
+    grid-template-columns: 110px 380px;
+    column-gap: 8px;
+    align-items: baseline;
+
+    margin: 3px auto;
+
+    font-size: 1.08rem;
+    line-height: 1.55;
+}
+
+.individual-round {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.individual-result-text {
+  text-align: left;
+}
+
+
+/* ==========================================
+   団体戦の納会資料表示
+========================================== */
+
+.team-result {
+  margin-top: 48px;
+}
+
+.team-result > h2 {
+  margin: 0 0 6px;
+
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.team-overall-result {
+  margin: 0 0 4px;
+
+  text-align: center;
+  font-size: 1.12rem;
+}
+
+.team-result > h2 {
+    margin: 0 0 6px;
+
+    text-align: center;
+
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.team-score-sheet {
+  max-width: 560px;
+  margin: 0 auto 30px;
+}
+
+
+/* 学校名 */
+
+.team-header {
+  display: grid;
+  grid-template-columns: 190px 100px 190px;
+  align-items: center;
+
+  margin-bottom: 4px;
+
+  font-size: 1.18rem;
+  font-weight: 500;
+}
+
+.home-team-name,
+.away-team-name {
+  text-align: center;
+}
+
+
+/* 各選手の試合 */
+
+.team-match-list {
+  display: grid;
+  gap: 2px;
+}
+
+.team-match-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: center;
+
+  min-height: 24px;
+
+  font-size: 1.08rem;
+  line-height: 1.45;
+}
+
+.team-home-player {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 8px;
+}
+
+.team-position {
+  text-align: right;
+  font-weight: 500;
+}
+
+.team-player-name {
+  text-align: left;
+}
+
+.team-center-score {
+  display: grid;
+  grid-template-columns: 1fr 16px 1fr;
+  align-items: center;
+
+  text-align: center;
+}
+
+.home-technique {
+  text-align: right;
+}
+
+.away-technique {
+  text-align: left;
+}
+
+.team-score-separator {
+  text-align: center;
+}
+
+.team-draw-text:first-child {
+  text-align: right;
+}
+
+.team-draw-text:last-child {
+  text-align: left;
+}
+
+.team-away-player {
+  text-align: left;
+}
+
+
+/* 団体戦の合計 */
+
+.team-total-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: center;
+
+  margin-top: 4px;
+
+  font-size: 1.08rem;
+}
+
+.team-total {
+  font-size: 1.08rem;
+}
+
+.home-total {
+  padding-right: 16px;
+  text-align: right;
+}
+
+.away-total {
+  padding-left: 16px;
+  text-align: left;
+}
+
+
+/* 編集・削除ボタン */
+
+.result-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.result-actions form {
+  margin: 0;
+}
+
+
+/* ==========================================
+   タブレット・スマホ
+========================================== */
+
+@media (max-width: 800px) {
+  header {
+    display: block;
+  }
+
+  nav {
+    margin-top: 12px;
+  }
+
+  .grid,
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-head {
+    align-items: flex-start;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .match-row {
+    grid-template-columns: 1fr 1fr;
+
+    margin-bottom: 10px;
+    padding: 12px;
+
+    background: #fafafa;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+  }
+
+  .match-row .wide,
+  .match-row .remove-row {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ==========================================
+   小さいスマホ
+========================================== */
+
+@media (max-width: 700px) {
+  .banquet-sheet {
+    padding: 22px 14px;
+  }
+
+  .banquet-sheet > h1 {
+    margin-bottom: 30px;
+    font-size: 1.25rem;
+  }
+
+  .player-result {
+    margin: 28px auto;
+  }
+
+  .player-result-heading {
+    display: block;
+    text-align: center;
+  }
+
+  .player-result-heading h3 {
+    font-size: 1rem;
+  }
+
+  .player-edit-button {
+    position: static;
+    margin-top: 8px;
+  }
+
+  .individual-match-row {
+    grid-template-columns: 76px 1fr;
+    column-gap: 10px;
+
+    font-size: 0.92rem;
+  }
+
+  .team-header,
+  .team-match-row,
+  .team-total-row {
+    grid-template-columns: 1fr 92px 1fr;
+  }
+
+  .team-header {
+    font-size: 1rem;
+  }
+
+  .team-match-row,
+  .team-total-row {
+    font-size: 0.9rem;
+  }
+
+  .team-home-player {
+    grid-template-columns: 42px 1fr;
+    gap: 5px;
+  }
+
+  .team-center-score {
+    grid-template-columns: 1fr 12px 1fr;
+  }
+
+  .home-total {
+    padding-right: 8px;
+  }
+
+  .away-total {
+    padding-left: 8px;
+  }
+}
+
+
+/* ==========================================
+   印刷
+========================================== */
+
+@media print {
+  header,
+  .page-head,
+  .player-edit-button,
+  .result-actions,
+  body > main > form {
+    display: none !important;
+  }
+
+  body,
+  main {
+    margin: 0;
+    padding: 0;
+
+    background: #ffffff;
+  }
+
+  .card,
+  .banquet-sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+

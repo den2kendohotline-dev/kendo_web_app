@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h2>大会一覧</h2>
+  </div>
+</div>
+
+
+<section class="card">
+
+  {% if tournaments %}
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>大会名</th>
+          <th></th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+        {% for tournament in tournaments %}
+
+        <tr>
+
+          <td>
+            {{ tournament.event_date }}
+          </td>
+
+          <td>
+            {{ tournament.name }}
+          </td>
+
+          <td>
+
+            <a
+              href="/results/tournaments/{{ tournament.id }}"
+              class="button secondary"
+            >
+              大会ページを開く
+            </a>
+
+          </td>
+
+        </tr>
+
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  {% else %}
+
+  <p class="muted">
+    まだ大会がありません。
+  </p>
+
+  {% endif %}
+
+</section>
+
+{% endblock %}

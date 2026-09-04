@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head"><div><h2>部員アカウント</h2><p>管理者だけが部員のログイン情報を追加できます。</p></div></div>
+<section class="card">
+<form method="post" action="/users" class="grid">
+  <label>ユーザー名<input name="username" required></label>
+  <label>初期パスワード<input type="password" name="password" required></label>
+  <label>権限<select name="role"><option value="member">部員</option><option value="admin">管理者</option></select></label>
+  <div class="align-end"><button class="primary">アカウント追加</button></div>
+</form>
+</section>
+<section class="card">
+<table>
+<thead><tr><th>ユーザー名</th><th>権限</th><th>作成日</th></tr></thead>
+<tbody>{% for item in users %}<tr><td>{{ item.username }}</td><td>{{ item.role }}</td><td>{{ item.created_at.strftime("%Y-%m-%d") }}</td></tr>{% endfor %}</tbody>
+</table>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}剣道部 試合結果管理{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>剣道部 試合結果管理</h1>
+  </div>
+  {% if user %}
+  <nav>
+  <a href="/">大会一覧</a>
+  <a href="/tournaments/new">大会を新規登録</a>
+  <a href="/players">選手登録</a>
+
+
+  <form method="post" action="/logout">
+    <button class="link-button">ログアウト</button>
+  </form>
+</nav>
+  {% endif %}
+</header>
+<main>{% block content %}{% endblock %}</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+毎回やる手順
+① プロジェクトへ移動
+cd C:\Users\ryota\projects\kendo_web_app
+一時的にスクリプト実行を許可
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+② 仮想環境を有効化
+.\.venv\Scripts\Activate.ps1
+
+成功すると、
+
+(.venv) PS C:\Users\ryota\projects\kendo_web_app>
+
+になります。
+
+③ 環境変数を設定
+$env:SECRET_KEY="test-secret-key"
+$env:ADMIN_USERNAME="admin"
+$env:ADMIN_PASSWORD="testpass"
+④ サーバー起動
+python -m uvicorn main:app --reload
+⑤ ブラウザで開く
+http://127.0.0.1:8000
+初回だけやること
+
+プロジェクトを初めて使うときだけです。
+
+仮想環境を作る
+python -m venv .venv
+必要なライブラリをインストール
+pip install -r requirements.txt
+
+これは一度だけです。
+
+サーバーを止める
+
+ターミナルで
+
+Ctrl + C
+まとめ
+毎回
+cd C:\Users\ryota\projects\kendo_web_app
+
+.\.venv\Scripts\Activate.ps1
+
+$env:SECRET_KEY="test-secret-key"
+$env:ADMIN_USERNAME="admin"
+$env:ADMIN_PASSWORD="testpass"
+
+python -m uvicorn main:app --reload
+初回だけ
+python -m venv .venv
+pip install -r requirements.txt

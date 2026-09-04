@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-head">
+
+  <div>
+    <h2>大会を新規登録</h2>
+
+    <p>
+      大会は一度だけ作成し、その大会ページに
+      個人戦・団体戦の結果を追加していきます。
+    </p>
+  </div>
+
+</div>
+
+
+<form
+  method="post"
+  action="/tournaments"
+>
+
+  <section class="card">
+
+    <div class="grid">
+
+      <label>
+        大会名
+
+        <input
+          type="text"
+          name="name"
+          required
+          placeholder="例：第67回関東理工科系学生剣道選手権大会"
+        >
+      </label>
+
+
+      <label>
+        開催日
+
+        <input
+          type="date"
+          name="event_date"
+          value="{{ today }}"
+          required
+        >
+      </label>
+
+    </div>
+
+  </section>
+
+
+  <div class="sticky-actions">
+
+    <button
+      type="submit"
+      class="primary large"
+    >
+      大会ページを作成
+    </button>
+
+  </div>
+
+</form>
+
+{% endblock %}
