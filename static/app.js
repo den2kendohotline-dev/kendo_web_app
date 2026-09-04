@@ -3,23 +3,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const rows = document.getElementById("rows");
   const addButton = document.getElementById("addRow");
 
+  function setupRemoveButton(row) {
+    const removeButton = row.querySelector(".remove-row");
+
+    if (removeButton) {
+      removeButton.addEventListener("click", () => {
+        row.remove();
+      });
+    }
+  }
+
   function addRow() {
-    if (!template || !rows) return;
+    if (!template || !rows) {
+      return;
+    }
+
     const fragment = template.content.cloneNode(true);
     const row = fragment.querySelector(".match-row");
-    row.querySelector(".remove-row").addEventListener("click", () => row.remove());
+
+    if (!row) {
+      return;
+    }
+
+    setupRemoveButton(row);
     rows.appendChild(fragment);
   }
 
-  if (addButton) {
+  if (addButton && template && rows) {
     addButton.addEventListener("click", addRow);
-    addRow();
+
+    // 新規登録画面など、まだ1行もない場合だけ
+    // 最初の入力行を1つ追加する
+    if (rows.children.length === 0) {
+      addRow();
+    }
+
+    // 編集画面に最初から存在する行にも
+    // 削除ボタンの処理を設定する
+    rows.querySelectorAll(".match-row").forEach((row) => {
+      setupRemoveButton(row);
+    });
   }
 
-  document.querySelectorAll("[data-copy-target]").forEach(button => {
+  document.querySelectorAll("[data-copy-target]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const target = document.getElementById(button.dataset.copyTarget);
-      if (!target) return;
+      const target = document.getElementById(
+        button.dataset.copyTarget
+      );
+
+      if (!target) {
+        return;
+      }
+
       try {
         await navigator.clipboard.writeText(target.value);
         button.textContent = "コピー済み";

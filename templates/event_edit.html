@@ -488,20 +488,5 @@
   rows.addEventListener("click", function (event) {
     const removeButton = event.target.closest(".remove-row");
 
-    if (!removeButton) {
-      return;
-    }
-
-    const row = removeButton.closest(".match-row");
-
-    if (row) {
-      row.remove();
-    }
-  });
-
-  if (rows.children.length === 0) {
-    addRow();
-  }
-</script>
-
+    
 {% endblock %}
