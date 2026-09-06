@@ -725,7 +725,7 @@ td {
     gap: 5px;
     min-width: 0;
 
-    transform: none;
+    transform: translateX(30px);
   }
 
   /* 中央 */
@@ -749,7 +749,7 @@ td {
     padding-right: 0;
 
     white-space: nowrap;
-    transform: none;
+    transform: translateX(30px);
   }
 
   /* 学校名 */
@@ -760,7 +760,7 @@ td {
 
   .away-team-name {
     text-align: center;
-    transform: none;
+    transform: translateX(-30px);
   }
 
   /* 合計 */
