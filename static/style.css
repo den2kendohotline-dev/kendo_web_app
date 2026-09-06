@@ -768,14 +768,16 @@ td {
     width: 100%;
   }
 
-  .team-home-player {
-    grid-template-columns:
-      40px
-      minmax(0, 1fr);
+  .team-home-player { 
+  grid-template-columns: 
+    40px 
+    minmax(0, 1fr); 
 
-    gap: 5px;
-    min-width: 0;
-  }
+  gap: 5px; 
+  min-width: 0;
+
+  transform: translateX(18px);
+}
 
   .team-player-name,
   .team-position,
@@ -799,8 +801,9 @@ td {
   }
 
   .home-team-name {
-  text-align: center;
-}
+    text-align: right;
+    padding-right: 28px;
+  }
 
 .away-team-name {
   text-align: center;
