@@ -473,20 +473,7 @@
 </template>
 
 
-<script>
-  const rows = document.getElementById("rows");
-  const addRowButton = document.getElementById("addRow");
-  const rowTemplate = document.getElementById("rowTemplate");
 
-  function addRow() {
-    const row = rowTemplate.content.cloneNode(true);
-    rows.appendChild(row);
-  }
-
-  addRowButton.addEventListener("click", addRow);
-
-  rows.addEventListener("click", function (event) {
-    const removeButton = event.target.closest(".remove-row");
 
     
 {% endblock %}
