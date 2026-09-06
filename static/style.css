@@ -890,7 +890,7 @@ td {
     gap: 4px;
 
     min-width: 0;
-    transform: none;
+    transform: translateX(20px);
   }
 
   .team-position {
