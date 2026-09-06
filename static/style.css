@@ -645,6 +645,10 @@ td {
   padding-left: 20px;
 }
 
+.away-team-name,
+.team-away-player {
+  transform: translateX(20px);
+}
 
 /* 団体戦の合計 */
 
