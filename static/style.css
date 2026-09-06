@@ -805,7 +805,7 @@ td {
 .team-home-player {
   grid-template-columns: 42px 1fr;
   gap: 5px;
-  transform: translateX(-10px);
+  transform: translateX(-1px);
 }
 
 .team-center-score {
@@ -822,7 +822,7 @@ td {
 }
 
 .away-total {
-  padding-left: 8px;
+  padding-left: 6px;
 }
 }
 
