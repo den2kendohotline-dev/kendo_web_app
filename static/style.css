@@ -697,6 +697,36 @@ td {
   margin: 0;
 }
 
+
+/* ==========================================
+   タブレット・スマホ ヘッダー
+========================================== */
+
+@media (max-width: 800px) {
+
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  nav {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+  }
+
+  nav a {
+    white-space: nowrap;
+  }
+}
+
 @media (min-width: 701px) and (max-width: 1300px) {
 
   .team-score-sheet {
