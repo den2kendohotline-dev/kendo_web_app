@@ -805,7 +805,7 @@ td {
 .team-home-player {
   grid-template-columns: 42px 1fr;
   gap: 5px;
-  transform: translateX(-1px);
+  transform: translateX(10px);
 }
 
 .team-center-score {
@@ -826,6 +826,9 @@ td {
 }
 
 .away-team-name {
+  transform: translateX(-10px);
+}
+.home-team-name {
   transform: translateX(-10px);
 }
 
