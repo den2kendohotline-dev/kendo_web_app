@@ -6,7 +6,7 @@
   <div>
     <h2>
       {{ tournament.name }}<br>
-      {{ "団体戦" if event_type == "team" else "個人戦" }}
+      {{ "団体戦" if event_type == "team" else "個人戦" }}：
       結果を追加
     </h2>
   </div>
@@ -118,7 +118,12 @@
 
 
   <div class="sticky-actions">
-
+    <a
+    href="/tournaments/{{ tournament.id }}"
+    class="button secondary"
+  >
+    キャンセル
+    </a>
     <button
       type="submit"
       class="primary large"
