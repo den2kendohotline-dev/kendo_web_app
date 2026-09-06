@@ -842,7 +842,7 @@ td {
   /* 右側：相手選手 */
   .team-away-player {
     min-width: 0;
-    padding-left: 8px;
+    padding-left: 20px;
 
     text-align: left;
     white-space: nowrap;
