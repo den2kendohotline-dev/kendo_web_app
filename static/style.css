@@ -703,6 +703,7 @@ td {
 ========================================== */
 
 @media (max-width: 800px) {
+
   header {
     display: block;
   }
@@ -744,6 +745,76 @@ td {
   .match-row .wide,
   .match-row .remove-row {
     grid-column: 1 / -1;
+  }
+
+
+  /* ==========================================
+     団体戦
+  ========================================== */
+
+  .team-score-sheet {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .team-header,
+  .team-match-row,
+  .team-total-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      80px
+      minmax(0, 1fr);
+
+    width: 100%;
+  }
+
+  .team-home-player {
+    grid-template-columns:
+      40px
+      minmax(0, 1fr);
+
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .team-player-name,
+  .team-position,
+  .team-away-player {
+    white-space: nowrap;
+  }
+
+  .team-center-score {
+    grid-template-columns:
+      minmax(0, 1fr)
+      10px
+      minmax(0, 1fr);
+
+    min-width: 0;
+  }
+
+  .team-away-player {
+    min-width: 0;
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .home-team-name {
+    text-align: left;
+  }
+
+  .away-team-name {
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .home-total {
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .away-total {
+    text-align: left;
+    padding-left: 10px;
   }
 }
 
