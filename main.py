@@ -315,6 +315,38 @@ templates.globals["outcome_text"] = outcome_text
 templates.globals["current_grade"] = current_grade
 
 
+TEAM_POSITION_ORDER = {
+    "先鋒": 1,
+    "次鋒": 2,
+    "五将": 3,
+    "中堅": 4,
+    "三将": 5,
+    "副将": 6,
+    "大将": 7,
+}
+
+
+def team_entry_order(position: str, fallback: int) -> int:
+    """団体戦のポジションを保存用の並び順へ変換する。"""
+    return TEAM_POSITION_ORDER.get((position or "").strip(), 100 + fallback)
+
+
+def sort_team_entries(event: Event) -> None:
+    """団体戦の選手をポジション順に並べ、表示順も更新する。"""
+    if event.event_type != "team":
+        return
+
+    event.entries.sort(
+        key=lambda entry: (
+            TEAM_POSITION_ORDER.get((entry.position or "").strip(), 999),
+            entry.order_index,
+            entry.id or 0,
+        )
+    )
+
+    for index, entry in enumerate(event.entries):
+        entry.order_index = index
+
 
 def delete_graduated_players(
     db: Session,
@@ -397,6 +429,9 @@ def tournament_view(
     }
 
     for event in tournament.events:
+        if event.event_type == "team":
+            sort_team_entries(event)
+
         if event.event_type == "individual":
             for entry in event.entries:
                 individual_by_player[
@@ -963,11 +998,17 @@ async def create_result(
 
             return default
 
+        position = item("position")
+
         db.add(
             MatchEntry(
                 event_id=event.id,
-                order_index=index,
-                position=item("position"),
+                order_index=(
+                    team_entry_order(position, index)
+                    if event_type == "team"
+                    else index
+                ),
+                position=position,
                 player_name=player_name,
                 opponent_name=item("opponent_name"),
                 individual_round=item("individual_round"),
@@ -1264,11 +1305,17 @@ async def update_event(
                 return str(fields[name][index]).strip()
             return default
 
+        position = item("position")
+
         db.add(
             MatchEntry(
                 event_id=event.id,
-                order_index=index,
-                position=item("position"),
+                order_index=(
+                    team_entry_order(position, index)
+                    if event.event_type == "team"
+                    else index
+                ),
+                position=position,
                 player_name=player_name,
                 opponent_name=item("opponent_name"),
                 individual_round=item("individual_round"),
