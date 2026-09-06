@@ -725,7 +725,7 @@ td {
     gap: 5px;
     min-width: 0;
 
-    transform: translateX(30px);
+    transform: translateX(50px);
   }
 
   /* 中央 */
@@ -749,18 +749,18 @@ td {
     padding-right: 0;
 
     white-space: nowrap;
-    transform: translateX(30px);
+    transform: translateX(50px);
   }
 
   /* 学校名 */
   .home-team-name {
     text-align: center;
-    transform: none;
+    transform: translateX(30px);
   }
 
   .away-team-name {
     text-align: center;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
   }
 
   /* 合計 */
