@@ -749,98 +749,134 @@ td {
 
 
 /* ==========================================
-   小さいスマホ
+   スマホ用 団体戦表示
 ========================================== */
 
 @media (max-width: 700px) {
 
+  main {
+    padding: 12px;
+  }
+
   .banquet-sheet {
-    padding: 22px 14px;
+    width: 100%;
+    padding: 28px 12px;
   }
 
-  .banquet-sheet > h1 {
-    margin-bottom: 30px;
-    font-size: 1.25rem;
+  .team-result {
+    margin-top: 42px;
   }
 
-  .player-result {
-    margin: 28px auto;
+  .team-result > h2 {
+    font-size: 1.35rem;
   }
 
-  .player-result-heading {
-    display: block;
-    text-align: center;
-  }
-
-  .player-result-heading h3 {
+  .team-overall-result {
     font-size: 1rem;
   }
 
-  .player-edit-button {
-    position: static;
-    margin-top: 8px;
-  }
 
-  .individual-match-row {
-    grid-template-columns: 76px 1fr;
-    column-gap: 10px;
-    font-size: 0.92rem;
-  }
-
-
-  /* 団体戦全体の幅を固定 */
+  /* 団体戦をカード幅に収める */
   .team-score-sheet {
-  width: 460px;
-  max-width: none;
-  margin-left: auto;
-  margin-right: auto;
-}
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 24px;
+  }
 
-.team-header,
-.team-match-row,
-.team-total-row {
-  grid-template-columns: 184px 92px 184px;
-}
 
-.team-header {
-  font-size: 1rem;
-}
+  /* 学校名 */
+  .team-header {
+    grid-template-columns:
+      minmax(0, 1fr)
+      72px
+      minmax(0, 1fr);
 
-.team-match-row,
-.team-total-row {
-  font-size: 0.9rem;
-}
+    width: 100%;
+    font-size: 0.98rem;
+  }
 
-.team-home-player {
-  grid-template-columns: 42px 1fr;
-  gap: 5px;
-  transform: translateX(10px);
-}
 
-.team-center-score {
-  grid-template-columns: 1fr 12px 1fr;
-}
+  /* 選手 */
+  .team-match-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      72px
+      minmax(0, 1fr);
 
-.team-away-player {
-  text-align: left;
-  transform: translateX(40px);
-}
+    width: 100%;
+    min-height: 24px;
 
-.home-total {
-  padding-right: 8px;
-}
+    font-size: 0.88rem;
+  }
 
-.away-total {
-  padding-left: 8px;
-}
 
-.away-team-name {
-  transform: translateX(-10px);
-}
-.home-team-name {
-  transform: translateX(-10px);
-}
+  /* 左側：ポジション＋選手名 */
+  .team-home-player {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 4px;
 
+    min-width: 0;
+    transform: none;
+  }
+
+  .team-position {
+    white-space: nowrap;
+  }
+
+  .team-player-name {
+    white-space: nowrap;
+  }
+
+
+  /* 中央：取得本 */
+  .team-center-score {
+    grid-template-columns:
+      minmax(0, 1fr)
+      10px
+      minmax(0, 1fr);
+
+    min-width: 0;
+  }
+
+
+  /* 右側：相手選手 */
+  .team-away-player {
+    min-width: 0;
+    padding-left: 8px;
+
+    text-align: left;
+    white-space: nowrap;
+
+    transform: none;
+  }
+
+
+  /* 学校名を動かさない */
+  .home-team-name,
+  .away-team-name {
+    transform: none;
+  }
+
+
+  /* 合計 */
+  .team-total-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      72px
+      minmax(0, 1fr);
+
+    width: 100%;
+
+    font-size: 0.95rem;
+  }
+
+  .home-total {
+    padding-right: 8px;
+  }
+
+  .away-total {
+    padding-left: 8px;
+  }
 }
 
 /* ==========================================
