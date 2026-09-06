@@ -1055,3 +1055,42 @@ input[type="date"]::-webkit-date-and-time-value {
     text-align: center;
   }
 }
+
+/* ==========================================
+   タブレット・スマホ 試合編集フォーム
+========================================== */
+
+@media (max-width: 800px) {
+
+  .match-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    margin-bottom: 10px;
+    padding: 12px;
+
+    background: #fafafa;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+  }
+
+  .match-row label {
+    min-width: 0;
+  }
+
+  .match-row input,
+  .match-row select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .match-row .wide,
+  .match-row .remove-row {
+    grid-column: 1 / -1;
+  }
+
+  .score {
+    min-width: 0;
+  }
+}
