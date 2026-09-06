@@ -440,28 +440,34 @@ def tournament_view(
 
         else:
             wins = sum(
-                entry.result in {
-                    "win",
-                    "walkover_win",
-                }
+                entry.result == "walkover_win"
+                or (
+                    entry.result not in {"walkover_win", "walkover_loss"}
+                    and entry.score_for > entry.score_against
+                )
                 for entry in event.entries
             )
-
+            
             losses = sum(
-                entry.result in {
-                    "loss",
-                    "walkover_loss",
-                }
+                entry.result == "walkover_loss"
+                or (
+                    entry.result not in {"walkover_win", "walkover_loss"}
+                    and entry.score_for < entry.score_against
+                )
                 for entry in event.entries
             )
-
+            
             points_for = sum(
-                entry.score_for
+                2 if entry.result == "walkover_win"
+                else 0 if entry.result == "walkover_loss"
+                else entry.score_for
                 for entry in event.entries
             )
-
+            
             points_against = sum(
-                entry.score_against
+                2 if entry.result == "walkover_loss"
+                else 0 if entry.result == "walkover_win"
+                else entry.score_against
                 for entry in event.entries
             )
 
