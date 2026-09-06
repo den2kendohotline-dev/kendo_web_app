@@ -5,7 +5,7 @@
 <div class="page-head">
   <div>
     <h2>
-      {{ tournament.name }}：
+      {{ tournament.name }}<br>
       {{ "団体戦" if event_type == "team" else "個人戦" }}
       結果を追加
     </h2>
@@ -87,7 +87,7 @@
           type="text"
           name="opponent_team"
           required
-          placeholder="例：工学院大"
+          placeholder="例：電通大"
         >
       </label>
 
