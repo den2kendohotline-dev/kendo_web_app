@@ -8,20 +8,31 @@
 </head>
 <body>
 <header>
-  <div>
+  <div class="header-title-row">
     <h1>剣道部 試合結果</h1>
+
+    {% if user %}
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-label="メニューを開く"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+    {% endif %}
   </div>
+
   {% if user %}
-  <nav>
-  <a href="/">大会一覧</a>
-  <a href="/tournaments/new">大会を新規登録</a>
-  <a href="/players">選手登録</a>
+  <nav class="site-nav">
+    <a href="/">大会一覧</a>
+    <a href="/tournaments/new">大会を新規登録</a>
+    <a href="/players">選手登録</a>
 
-
-  <form method="post" action="/logout">
-    <button class="link-button">ログアウト</button>
-  </form>
-</nav>
+    <form method="post" action="/logout">
+      <button class="link-button">ログアウト</button>
+    </form>
+  </nav>
   {% endif %}
 </header>
 <main>{% block content %}{% endblock %}</main>
