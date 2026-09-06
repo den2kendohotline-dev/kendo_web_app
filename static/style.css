@@ -799,13 +799,13 @@ td {
   }
 
   .home-team-name {
-    text-align: left;
-  }
+  text-align: center;
+}
 
-  .away-team-name {
-    text-align: right;
-    padding-right: 10px;
-  }
+.away-team-name {
+  text-align: center;
+  padding-right: 0;
+}
 
   .home-total {
     text-align: right;
