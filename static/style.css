@@ -781,61 +781,50 @@ td {
 
   /* 団体戦全体の幅を固定 */
   .team-score-sheet {
-    width: 460px;
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-  /* 左・中央・右の列幅を固定 */
-  .team-header,
-  .team-match-row,
-  .team-total-row {
-    grid-template-columns: 184px 92px 184px;
-  }
-
-
-  .team-header {
-    font-size: 1rem;
-  }
-
-  .team-match-row,
-  .team-total-row {
-    font-size: 0.9rem;
-  }
-
-
-  /* 電通大側 */
-  .team-home-player {
-    grid-template-columns: 42px 1fr;
-    gap: 5px;
-  }
-
-
-  /* 中央のスコア */
-  .team-center-score {
-    grid-template-columns: 1fr 12px 1fr;
-  }
-
-
-  /* 相手校側 */
-  .team-away-player {
-    padding-left: 18px;
-    text-align: left;
-  }
-
-
-  /* 合計 */
-  .home-total {
-    padding-right: 8px;
-  }
-
-  .away-total {
-    padding-left: 8px;
-  }
+  width: 460px;
+  max-width: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+.team-header,
+.team-match-row,
+.team-total-row {
+  grid-template-columns: 184px 92px 184px;
+}
+
+.team-header {
+  font-size: 1rem;
+}
+
+.team-match-row,
+.team-total-row {
+  font-size: 0.9rem;
+}
+
+.team-home-player {
+  grid-template-columns: 42px 1fr;
+  gap: 5px;
+  transform: translateX(-20px);
+}
+
+.team-center-score {
+  grid-template-columns: 1fr 12px 1fr;
+}
+
+.team-away-player {
+  text-align: left;
+  transform: translateX(20px);
+}
+
+.home-total {
+  padding-right: 8px;
+}
+
+.away-total {
+  padding-left: 8px;
+}
+}
 
 /* ==========================================
    印刷
