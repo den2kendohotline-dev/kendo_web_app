@@ -182,15 +182,23 @@
               <span class="team-draw-text">
                 引き
               </span>
-
+            
+              <span class="home-technique">
+                {{ sides[0] if sides | length > 0 else "" }}
+              </span>
+            
               <span class="team-score-separator">
                 -
               </span>
-
+            
+              <span class="away-technique">
+                {{ sides[1] if sides | length > 1 else "" }}
+              </span>
+            
               <span class="team-draw-text">
                 分け
               </span>
-
+            
             {% else %}
 
               <span class="home-technique">
