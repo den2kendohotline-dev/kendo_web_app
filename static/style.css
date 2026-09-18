@@ -1124,24 +1124,39 @@ input[type="date"]::-webkit-date-and-time-value {
   margin-top: 28px;
 }
 
+/* 引き分け表示 */
 .draw-score {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static !important;
+  transform: none !important;
 
-  display: flex;
+  display: flex !important;
+  flex-wrap: nowrap !important;
   align-items: center;
   justify-content: center;
   gap: 3px;
 
-  white-space: nowrap;
-  width: auto;
-  min-width: max-content;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+
+  margin-left: 50%;
+  translate: -50% 0;
+
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
 }
 
 .draw-score > * {
-  flex: 0 0 auto;
-  white-space: nowrap;
+  display: inline-block;
+  flex: none !important;
+
+  width: auto !important;
+  min-width: max-content !important;
+
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
 }
 
 .team-center-score {
