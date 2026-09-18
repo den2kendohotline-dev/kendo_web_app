@@ -815,7 +815,7 @@ td {
   .team-header {
     grid-template-columns:
       minmax(0, 1fr)
-      72px
+      110px
       minmax(0, 1fr);
 
     width: 100%;
@@ -827,7 +827,7 @@ td {
   .team-match-row {
     grid-template-columns:
       minmax(0, 1fr)
-      72px
+      110px
       minmax(0, 1fr);
 
     width: 100%;
@@ -909,7 +909,7 @@ td {
   .team-total-row {
     grid-template-columns:
       minmax(0, 1fr)
-      72px
+      110px
       minmax(0, 1fr);
 
     width: 100%;
