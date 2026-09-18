@@ -857,13 +857,20 @@ td {
 
   /* 中央：取得本 */
   .team-center-score {
-    grid-template-columns:
-      minmax(0, 1fr)
-      10px
-      minmax(0, 1fr);
+  grid-template-columns:
+    1fr
+    10px
+    1fr;
 
-    min-width: 0;
-  }
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.team-center-score .home-technique,
+.team-center-score .away-technique {
+  white-space: nowrap;
+}
 
 
   /* 右側：相手選手 */
@@ -1103,3 +1110,5 @@ input[type="date"]::-webkit-date-and-time-value {
 
   margin-top: 28px;
 }
+
+
