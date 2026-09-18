@@ -1124,18 +1124,23 @@ input[type="date"]::-webkit-date-and-time-value {
   margin-top: 28px;
 }
 
-
 .draw-score {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 
-  display: grid;
-  grid-template-columns: auto auto 10px auto auto;
+  display: flex;
   align-items: center;
-  column-gap: 3px;
+  justify-content: center;
+  gap: 3px;
 
-  width: max-content;
+  white-space: nowrap;
+  width: auto;
+  min-width: max-content;
+}
+
+.draw-score > * {
+  flex: 0 0 auto;
   white-space: nowrap;
 }
 
