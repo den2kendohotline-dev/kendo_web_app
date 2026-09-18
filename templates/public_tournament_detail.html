@@ -146,40 +146,36 @@
           </div>
 
 
-          <div class="team-center-score">
+          
+<div class="team-center-score">
 
-            {% if entry.result == "draw" %}
+  {% if entry.result == "draw" %}
 
-              <span class="home-technique">
-                引き {{ sides[0] if sides | length > 0 else "" }}
-              </span>
-            
-              <span class="team-score-separator">
-                -
-              </span>
-            
-              <span class="away-technique">
-                {{ sides[1] if sides | length > 1 else "" }} 分け
-              </span>
-            
-            {% else %}
+    <div class="draw-score">
+      <span>引き</span>
+      <span>{{ sides[0] if sides | length > 0 else "" }}</span>
+      <span>-</span>
+      <span>{{ sides[1] if sides | length > 1 else "" }}</span>
+      <span>分け</span>
+    </div>
 
-              <span class="home-technique">
-                {{ sides[0] if sides | length > 0 else "" }}
-              </span>
+  {% else %}
 
-              <span class="team-score-separator">
-                -
-              </span>
+    <span class="home-technique">
+      {{ sides[0] if sides | length > 0 else "" }}
+    </span>
 
-              <span class="away-technique">
-                {{ sides[1] if sides | length > 1 else "" }}
-              </span>
+    <span class="team-score-separator">
+      -
+    </span>
 
-            {% endif %}
+    <span class="away-technique">
+      {{ sides[1] if sides | length > 1 else "" }}
+    </span>
 
-          </div>
+  {% endif %}
 
+</div>
 
           <div class="team-away-player">
             {{ entry.opponent_name }}
