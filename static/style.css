@@ -857,6 +857,9 @@ td {
 
   /* 中央：取得本 */
   .team-center-score {
+  position: relative;
+  display: grid;
+
   grid-template-columns:
     1fr
     10px
@@ -867,8 +870,18 @@ td {
   overflow: visible;
 }
 
-.team-center-score .home-technique,
+.team-center-score .home-technique {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.team-center-score .team-score-separator {
+  text-align: center;
+  white-space: nowrap;
+}
+
 .team-center-score .away-technique {
+  text-align: left;
   white-space: nowrap;
 }
 
