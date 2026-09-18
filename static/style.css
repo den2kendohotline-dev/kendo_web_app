@@ -1125,3 +1125,20 @@ input[type="date"]::-webkit-date-and-time-value {
 }
 
 
+.draw-score {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: grid;
+  grid-template-columns: auto auto 10px auto auto;
+  align-items: center;
+  column-gap: 3px;
+
+  width: max-content;
+  white-space: nowrap;
+}
+
+.team-center-score {
+  position: relative;
+}
