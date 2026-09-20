@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>大会動画 | UEC KENDO</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #171717;
+      color: #fff;
+      font-family:
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+    }
+
+    header {
+      padding: 28px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .logo {
+      font-size: 15px;
+      letter-spacing: 0.15em;
+    }
+
+    .logout {
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+    }
+
+    main {
+      width: min(1000px, 88%);
+      margin: 0 auto;
+      padding: 90px 0 120px;
+    }
+
+    .small {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 90px);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    .jp {
+      margin-top: 20px;
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+      letter-spacing: 0.12em;
+    }
+
+    .year {
+      margin-top: 90px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .video {
+      display: grid;
+      grid-template-columns: 130px 1fr auto;
+      gap: 30px;
+      align-items: center;
+
+      padding: 30px 0;
+
+      border-top: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .video:last-child {
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .date {
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .name {
+      font-size: 17px;
+      font-weight: 400;
+    }
+
+    .watch {
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+    }
+
+    .watch:hover {
+      opacity: 0.55;
+    }
+
+    @media (max-width: 650px) {
+      main {
+        width: 88%;
+        padding-top: 65px;
+      }
+
+      .video {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 26px 0;
+      }
+
+      .watch {
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">UEC KENDO</div>
+
+  <form method="post" action="/members/logout">
+    <button class="logout" type="submit">
+      LOGOUT
+    </button>
+  </form>
+</header>
+
+<main>
+
+  <p class="small">
+    UNIVERSITY OF ELECTRO-COMMUNICATIONS
+  </p>
+
+  <h1>MATCH<br>VIDEOS</h1>
+
+  <p class="jp">大会動画</p>
+
+
+  <h2 class="year">2026年度</h2>
+
+  <div class="video-list">
+
+    <div class="video">
+      <div class="date">2026.09.13</div>
+
+      <div class="name">
+        関東学生剣道優勝大会
+      </div>
+
+      <a
+        class="watch"
+        href="ここにYouTubeのURL"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WATCH VIDEO →
+      </a>
+    </div>
+
+
+    
+  </div>
+
+</main>
+
+</body>
+</html>

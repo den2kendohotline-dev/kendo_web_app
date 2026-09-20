@@ -581,6 +581,73 @@ def tournament_view(
 async def unauthorized_handler(request: Request, exc: HTTPException):
     return RedirectResponse("/login", status_code=303)
 
+# =========================
+# 部員専用ページ
+# =========================
+
+@app.get("/members/login", response_class=HTMLResponse)
+def members_login_page(request: Request):
+    # すでに部員認証済みなら動画一覧へ
+    if request.session.get("members_authenticated"):
+        return RedirectResponse("/members/videos", status_code=303)
+
+    return render(
+        "members_login.html",
+        request=request,
+        error="",
+    )
+
+
+@app.post("/members/login")
+def members_login(
+    request: Request,
+    password: str = Form(...),
+):
+    members_password = os.getenv("MEMBERS_PASSWORD")
+
+    if not members_password:
+        raise HTTPException(
+            status_code=500,
+            detail="MEMBERS_PASSWORD が設定されていません。",
+        )
+
+    if not hmac.compare_digest(password, members_password):
+        return render(
+            "members_login.html",
+            request=request,
+            error="パスワードが違います。",
+        )
+
+    request.session["members_authenticated"] = True
+
+    return RedirectResponse(
+        "/members/videos",
+        status_code=303,
+    )
+
+
+@app.get("/members/videos", response_class=HTMLResponse)
+def members_videos(request: Request):
+    if not request.session.get("members_authenticated"):
+        return RedirectResponse(
+            "/members/login",
+            status_code=303,
+        )
+
+    return render(
+        "members_videos.html",
+        request=request,
+    )
+
+
+@app.post("/members/logout")
+def members_logout(request: Request):
+    request.session.pop("members_authenticated", None)
+
+    return RedirectResponse(
+        "/members/login",
+        status_code=303,
+    )
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page(request: Request):

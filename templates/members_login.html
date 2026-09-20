@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>部員専用 | UEC KENDO</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      background: #171717;
+      color: #fff;
+
+      font-family:
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+    }
+
+    .login {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .small {
+      margin-bottom: 20px;
+
+      font-size: 10px;
+      letter-spacing: 0.2em;
+
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    h1 {
+      font-size: clamp(48px, 9vw, 80px);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    .jp {
+      margin-top: 18px;
+
+      font-size: 15px;
+      letter-spacing: 0.1em;
+
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    form {
+      margin-top: 70px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 12px;
+
+      font-size: 11px;
+      letter-spacing: 0.15em;
+
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input {
+      width: 100%;
+
+      padding: 16px 0;
+
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      outline: none;
+
+      background: transparent;
+      color: #fff;
+
+      font-size: 18px;
+    }
+
+    input:focus {
+      border-bottom-color: #7777ff;
+    }
+
+    button {
+      margin-top: 40px;
+
+      padding: 0 0 8px;
+
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+      background: transparent;
+      color: #fff;
+
+      font-size: 13px;
+      letter-spacing: 0.15em;
+
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.65;
+    }
+
+    .error {
+      margin-top: 25px;
+
+      font-size: 13px;
+      color: #ff8d8d;
+    }
+
+    .back {
+      display: inline-block;
+
+      margin-top: 70px;
+
+      color: rgba(255, 255, 255, 0.5);
+
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="login">
+
+    <p class="small">
+      UNIVERSITY OF ELECTRO-COMMUNICATIONS
+    </p>
+
+    <h1>MEMBERS<br>ONLY</h1>
+
+    <p class="jp">部員専用</p>
+
+    <form method="post" action="/members/login">
+
+      <label for="password">PASSWORD</label>
+
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+        autofocus
+      >
+
+      <button type="submit">
+        LOGIN →
+      </button>
+
+    </form>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <a
+      href="https://ueckendo-homepage.onrender.com/"
+      class="back"
+    >
+      ← BACK TO WEBSITE
+    </a>
+
+  </main>
+
+</body>
+</html>
