@@ -1432,3 +1432,6 @@ def delete_tournament(
         db.delete(tournament)
         db.commit()
     return RedirectResponse("/", status_code=303)
+
+from mobile_api import router as mobile_router
+app.include_router(mobile_router)
