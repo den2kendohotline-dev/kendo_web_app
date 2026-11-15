@@ -341,6 +341,18 @@ def update_mobile_tournament(tournament_id: int, payload: TournamentCreate, user
     db.commit()
     return {'id': t.id, 'name': t.name, 'event_date': t.event_date.isoformat(), 'venue': t.venue}
 
+@router.delete('/api/v1/tournaments/{tournament_id}', status_code=204)
+def delete_mobile_tournament(
+    tournament_id: int,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    t = db.get(Tournament, tournament_id)
+    if t is None:
+        raise HTTPException(404, '大会が見つかりません。')
+
+    db.delete(t)
+    db.commit()
 
 @router.post('/api/v1/events', status_code=201)
 def create_mobile_event(payload: EventCreate, user: User = Depends(mobile_user), db: Session = Depends(get_db)):
