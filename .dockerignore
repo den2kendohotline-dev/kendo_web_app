@@ -1,0 +1,10 @@
+﻿.git
+.gitignore
+.venv/
+__pycache__/
+*.pyc
+*.db
+backup/
+mobile_api_broken*.py
+.env
+.env.*

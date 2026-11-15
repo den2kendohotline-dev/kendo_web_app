@@ -2,3 +2,7 @@
 __pycache__/
 .env
 *.pyc
+kendo.db
+kendo_test.db
+backup/
+mobile_api_broken*.py

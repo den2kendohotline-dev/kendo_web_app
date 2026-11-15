@@ -4,12 +4,13 @@ import hashlib
 import hmac
 import os
 import secrets
+from fastapi.middleware.cors import CORSMiddleware
 from collections import defaultdict
 from datetime import date, datetime
 from typing import Generator
 
 from fastapi import Depends, FastAPI, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from sqlalchemy import (
@@ -266,18 +267,31 @@ def cleanup_graduated_players() -> None:
 
 
 app = FastAPI(title="剣道部 試合結果管理")
+
+# Androidアプリからの通信を許可
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost",
+        "https://localhost",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
     same_site="lax",
     https_only=False,
 )
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 templates = Environment(
     loader=FileSystemLoader("templates"), autoescape=select_autoescape(["html", "xml"])
 )
-
-
 def render(name: str, **context) -> HTMLResponse:
     return HTMLResponse(templates.get_template(name).render(**context))
 
@@ -579,6 +593,11 @@ def tournament_view(
 
 @app.exception_handler(401)
 async def unauthorized_handler(request: Request, exc: HTTPException):
+    if request.url.path.startswith("/api/v1/"):
+        return JSONResponse(
+            status_code=401,
+            content={"detail": exc.detail}
+        )
     return RedirectResponse("/login", status_code=303)
 
 # =========================
