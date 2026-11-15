@@ -274,6 +274,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost",
         "https://localhost",
+        "https://uec-kendo-mobile.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
