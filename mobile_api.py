@@ -441,7 +441,7 @@ class VideoPlaylistIn(BaseModel):
     title: str = Field(min_length=1, max_length=200)
     category: str
     youtube_url: str = Field(min_length=1, max_length=500)
-
+    playlist_date: date
 
 def validate_video_playlist(payload: VideoPlaylistIn):
     from urllib.parse import urlparse, parse_qs
@@ -479,6 +479,7 @@ def video_playlist_data(playlist: VideoPlaylist):
         "title": playlist.title,
         "category": playlist.category,
         "youtube_url": playlist.youtube_url,
+        "playlist_date": playlist.playlist_date.isoformat() if playlist.playlist_date else None,
     }
 
 
@@ -488,7 +489,10 @@ def get_video_playlists(
     db: Session = Depends(get_db),
 ):
     playlists = db.scalars(
-        select(VideoPlaylist).order_by(VideoPlaylist.id.desc())
+        select(VideoPlaylist).order_by(
+            VideoPlaylist.playlist_date.desc(),
+            VideoPlaylist.id.desc()
+      )
     ).all()
 
     return [video_playlist_data(p) for p in playlists]
@@ -506,6 +510,7 @@ def create_video_playlist(
         title=title,
         category=category,
         youtube_url=url,
+        playlist_date=payload.playlist_date,
     )
 
     db.add(playlist)
@@ -532,6 +537,7 @@ def update_video_playlist(
     playlist.title = title
     playlist.category = category
     playlist.youtube_url = url
+    playlist.playlist_date = payload.playlist_date
 
     db.commit()
     db.refresh(playlist)

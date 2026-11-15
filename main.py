@@ -132,13 +132,10 @@ class VideoPlaylist(Base):
     __tablename__ = "video_playlists"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-
     title: Mapped[str] = mapped_column(String(200))
-
     category: Mapped[str] = mapped_column(String(20))
-
     youtube_url: Mapped[str] = mapped_column(String(500))
-
+    playlist_date: Mapped[date | None] = mapped_column(Date, nullable=True)
 
 class MatchEntry(Base):
     __tablename__ = "match_entries"
@@ -172,6 +169,20 @@ def ensure_database_schema() -> None:
                 text(
                     "ALTER TABLE players "
                     "ADD COLUMN enrollment_year INTEGER"
+                )
+            )
+
+    playlist_columns = {
+        column["name"]
+        for column in inspector.get_columns("video_playlists")
+    }
+
+    if "playlist_date" not in playlist_columns:
+        with engine.begin() as connection:
+            connection.execute(
+                text(
+                    "ALTER TABLE video_playlists "
+                    "ADD COLUMN playlist_date DATE"
                 )
             )
 
