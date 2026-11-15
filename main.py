@@ -128,6 +128,18 @@ class Event(Base):
     )
 
 
+class VideoPlaylist(Base):
+    __tablename__ = "video_playlists"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    title: Mapped[str] = mapped_column(String(200))
+
+    category: Mapped[str] = mapped_column(String(20))
+
+    youtube_url: Mapped[str] = mapped_column(String(500))
+
+
 class MatchEntry(Base):
     __tablename__ = "match_entries"
     id: Mapped[int] = mapped_column(primary_key=True)

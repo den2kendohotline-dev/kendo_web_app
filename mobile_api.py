@@ -16,6 +16,7 @@ from main import (
     Player,
     Event,
     MatchEntry,
+    VideoPlaylist,
     verify_password,
 )
 
@@ -37,8 +38,14 @@ class IndividualAward(Base):
     award: Mapped[str] = mapped_column(String(30))
 
 
-Base.metadata.create_all(bind=engine, tables=[MobileToken.__table__, IndividualAward.__table__])
-
+Base.metadata.create_all(
+    bind=engine,
+    tables=[
+        MobileToken.__table__,
+        IndividualAward.__table__,
+        VideoPlaylist.__table__,
+    ],
+)
 router = APIRouter()
 
 class LoginIn(BaseModel):
@@ -428,3 +435,120 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         ))
     db.commit()
     return {'id': e.id, 'tournament_id': t.id}
+
+
+class VideoPlaylistIn(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    category: str
+    youtube_url: str = Field(min_length=1, max_length=500)
+
+
+def validate_video_playlist(payload: VideoPlaylistIn):
+    from urllib.parse import urlparse, parse_qs
+
+    title = payload.title.strip()
+    category = payload.category.strip()
+    url = payload.youtube_url.strip()
+
+    if not title:
+        raise HTTPException(422, "タイトルを入力してください。")
+
+    if category not in {"match", "practice"}:
+        raise HTTPException(422, "カテゴリが正しくありません。")
+
+    parsed = urlparse(url)
+
+    if (
+        parsed.scheme != "https"
+        or parsed.hostname not in {"www.youtube.com", "youtube.com", "m.youtube.com"}
+        or parsed.path != "/playlist"
+    ):
+        raise HTTPException(422, "YouTube再生リストのURLを入力してください。")
+
+    playlist_id = parse_qs(parsed.query).get("list", [""])[0]
+
+    if not playlist_id or not all(c.isalnum() or c in "_-" for c in playlist_id):
+        raise HTTPException(422, "再生リストのURLが正しくありません。")
+
+    return title, category, f"https://www.youtube.com/playlist?list={playlist_id}"
+
+
+def video_playlist_data(playlist: VideoPlaylist):
+    return {
+        "id": playlist.id,
+        "title": playlist.title,
+        "category": playlist.category,
+        "youtube_url": playlist.youtube_url,
+    }
+
+
+@router.get("/api/v1/video-playlists")
+def get_video_playlists(
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    playlists = db.scalars(
+        select(VideoPlaylist).order_by(VideoPlaylist.id.desc())
+    ).all()
+
+    return [video_playlist_data(p) for p in playlists]
+
+
+@router.post("/api/v1/video-playlists", status_code=201)
+def create_video_playlist(
+    payload: VideoPlaylistIn,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    title, category, url = validate_video_playlist(payload)
+
+    playlist = VideoPlaylist(
+        title=title,
+        category=category,
+        youtube_url=url,
+    )
+
+    db.add(playlist)
+    db.commit()
+    db.refresh(playlist)
+
+    return video_playlist_data(playlist)
+
+
+@router.put("/api/v1/video-playlists/{playlist_id}")
+def update_video_playlist(
+    playlist_id: int,
+    payload: VideoPlaylistIn,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    playlist = db.get(VideoPlaylist, playlist_id)
+
+    if playlist is None:
+        raise HTTPException(404, "再生リストが見つかりません。")
+
+    title, category, url = validate_video_playlist(payload)
+
+    playlist.title = title
+    playlist.category = category
+    playlist.youtube_url = url
+
+    db.commit()
+    db.refresh(playlist)
+
+    return video_playlist_data(playlist)
+
+
+@router.delete("/api/v1/video-playlists/{playlist_id}", status_code=204)
+def delete_video_playlist(
+    playlist_id: int,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    playlist = db.get(VideoPlaylist, playlist_id)
+
+    if playlist is None:
+        raise HTTPException(404, "再生リストが見つかりません。")
+
+    db.delete(playlist)
+    db.commit()
