@@ -518,12 +518,12 @@ def tournament_view(
                 }
             )
 
-    individual_sections = []
+        individual_sections = []
 
     for player_name, entries in individual_by_player.items():
         entries.sort(
             key=lambda entry: (
-                int(entry.individual_round or 0),
+                int(str(entry.individual_round or "0").replace("回戦", "")),
                 entry.event_id,
                 entry.order_index,
             )
@@ -535,9 +535,11 @@ def tournament_view(
             "loss",
             "walkover_loss",
         }:
+            round_text = str(last.individual_round or len(entries))
             heading = (
-                f"{last.individual_round or len(entries)}"
-                "回戦敗退"
+                f"{round_text}敗退"
+                if "回戦" in round_text
+                else f"{round_text}回戦敗退"
             )
 
         elif last.result in {
@@ -556,7 +558,6 @@ def tournament_view(
                 "entries": entries,
             }
         )
-
 
     def section_sort_key(
         section: dict,
