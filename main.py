@@ -476,7 +476,7 @@ def tournament_view(
                     entry.player_name
                 ].append(entry)
 
-                else:
+        else:
             # 団体戦の勝者数
             wins = sum(
                 entry.result in {"win", "walkover_win"}
