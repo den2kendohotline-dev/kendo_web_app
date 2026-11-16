@@ -32,7 +32,7 @@
 
     <div class="player-result-heading">
       <h3>
-        {{ section.player }}（{{ section.heading }}）
+        {{ section.player }}（{{ individual_awards.get(section.player) or section.heading }}）
       </h3>
     </div>
 
@@ -88,29 +88,42 @@
 
 
   {% for item in team_events %}
+  {% if team_events %}
+
+     <h2>団体戦</h2>
+
+     <p class="team-overall-result">
+       {% if team_award %}
+         {{ team_award }}
+       {% else %}
+         {% set last = team_events | sort(attribute="event.team_round") | last %}
+         {% if last.result_label == "負け" %}
+           {{ last.event.team_round }}回戦敗退
+         {% elif last.result_label == "勝ち" %}
+           勝ち上がり
+         {% else %}
+           引き分け
+         {% endif %}
+       {% endif %}
+     </p>
+
+  {% endif %}
+
 
   <div class="team-result">
 
     <h2>
-      {{ item.event.round_name or "男子団体戦" }}
+      {{ item.event.round_name or (item.event.team_round ~ "回戦") }}
     </h2>
 
-
     <p class="team-overall-result">
-      結果：{{ item.event.team_round }}回戦
-
       {% if item.result_label == "勝ち" %}
         勝利
       {% elif item.result_label == "負け" %}
-        敗退
+        敗北
       {% else %}
         引き分け
       {% endif %}
-    </p>
-
-
-    <p class="center">
-      {{ item.event.team_round }}回戦スコア
     </p>
 
 
@@ -153,10 +166,18 @@
           </div>
 
 
-          
+
 <div class="team-center-score">
 
-  {% if entry.result == "draw" %}
+  {% if entry.result == "walkover_win" %}
+
+    <span class="draw-score">不戦勝</span>
+
+  {% elif entry.result == "walkover_loss" %}
+
+    <span class="draw-score">不戦敗</span>
+
+  {% elif entry.result == "draw" %}
 
     <span class="draw-score">
       引き{% if entry.detail %} {{ entry.detail }} {% else %} - {% endif %}分け
@@ -168,9 +189,7 @@
       {{ sides[0] if sides | length > 0 else "" }}
     </span>
 
-    <span class="team-score-separator">
-      -
-    </span>
+    <span class="team-score-separator">-</span>
 
     <span class="away-technique">
       {{ sides[1] if sides | length > 1 else "" }}
@@ -206,6 +225,10 @@
         </div>
 
       </div>
+
+      <p class="center muted">
+        取得本数／勝者数
+      </p>
 
     </div>
 

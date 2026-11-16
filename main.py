@@ -476,32 +476,27 @@ def tournament_view(
                     entry.player_name
                 ].append(entry)
 
-        else:
+                else:
+            # 団体戦の勝者数
             wins = sum(
-                entry.result == "walkover_win"
-                or (
-                    entry.result not in {"walkover_win", "walkover_loss"}
-                    and entry.score_for > entry.score_against
-                )
+                entry.result in {"win", "walkover_win"}
                 for entry in event.entries
             )
-            
+
             losses = sum(
-                entry.result == "walkover_loss"
-                or (
-                    entry.result not in {"walkover_win", "walkover_loss"}
-                    and entry.score_for < entry.score_against
-                )
+                entry.result in {"loss", "walkover_loss"}
                 for entry in event.entries
             )
-            
+
+            # 団体戦の取得本数
+            # 不戦勝は本学に2本、不戦敗は相手に2本を加算
             points_for = sum(
                 2 if entry.result == "walkover_win"
                 else 0 if entry.result == "walkover_loss"
                 else entry.score_for
                 for entry in event.entries
             )
-            
+
             points_against = sum(
                 2 if entry.result == "walkover_loss"
                 else 0 if entry.result == "walkover_win"
@@ -509,21 +504,15 @@ def tournament_view(
                 for entry in event.entries
             )
 
-            if (
-                wins > losses
-                or (
-                    wins == losses
-                    and points_for > points_against
-                )
+            # 団体戦の勝敗判定
+            # 勝者数が同じ場合は取得本数で判定
+            if wins > losses or (
+                wins == losses and points_for > points_against
             ):
                 result_label = "勝ち"
 
-            elif (
-                wins < losses
-                or (
-                    wins == losses
-                    and points_for < points_against
-                )
+            elif wins < losses or (
+                wins == losses and points_for < points_against
             ):
                 result_label = "負け"
 
@@ -778,6 +767,31 @@ def public_tournament_detail(
         tournament,
         db,
     )
+
+        # スマホアプリで保存した団体戦の順位を取得
+    team_award = db.execute(
+        text("""
+            SELECT award
+            FROM mobile_team_awards
+            WHERE tournament_id = :tournament_id
+        """),
+        {"tournament_id": tournament.id},
+    ).scalar_one_or_none() or ""
+
+    # スマホアプリで保存した個人戦の順位を取得
+    individual_awards = dict(
+        db.execute(
+            text("""
+                SELECT player_name, award
+                FROM mobile_individual_awards
+                WHERE tournament_id = :tournament_id
+            """),
+            {"tournament_id": tournament.id},
+        ).all()
+    )
+
+    view["team_award"] = team_award
+    view["individual_awards"] = individual_awards
 
     return render(
         "public_tournament_detail.html",
