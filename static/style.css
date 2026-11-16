@@ -1135,3 +1135,10 @@ input[type="date"]::-webkit-date-and-time-value {
 .team-center-score {
   position: relative;
 }
+
+/* 団体戦の技を中央に配置 */
+.team-center-score .team-technique-result {
+  grid-column: 1 / -1;
+  text-align: center;
+  white-space: nowrap;
+}
