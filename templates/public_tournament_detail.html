@@ -44,7 +44,14 @@
       <div class="individual-match-row">
 
         <span class="individual-round">
-          {{ entry.individual_round or loop.index }}回戦目
+          {% set round_name = entry.individual_round or loop.index|string %}
+          {% if round_name.endswith('回戦目') %}
+            {{ round_name }}
+          {% elif round_name.endswith('回戦') %}
+            {{ round_name }}目
+          {% else %}
+            {{ round_name }}回戦目
+          {% endif %}
         </span>
 
 
