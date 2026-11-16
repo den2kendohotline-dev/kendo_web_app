@@ -37,12 +37,22 @@ class IndividualAward(Base):
     player_name: Mapped[str] = mapped_column(String(100))
     award: Mapped[str] = mapped_column(String(30))
 
+class TeamAward(Base):
+    __tablename__ = "mobile_team_awards"
+
+    tournament_id: Mapped[int] = mapped_column(
+        ForeignKey("tournaments.id"),
+        primary_key=True,
+    )
+    award: Mapped[str] = mapped_column(String(30))
+
 
 Base.metadata.create_all(
     bind=engine,
     tables=[
         MobileToken.__table__,
         IndividualAward.__table__,
+        TeamAward.__table__,
         VideoPlaylist.__table__,
     ],
 )
@@ -224,6 +234,55 @@ def put_individual_award(tournament_id: int, payload: IndividualAwardUpdate, use
     db.commit()
     return {'player_name': name, 'award': payload.award}
 
+@router.get("/api/v1/tournaments/{tournament_id}/team-award")
+def get_team_award(
+    tournament_id: int,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    if db.get(Tournament, tournament_id) is None:
+        raise HTTPException(404, "大会が見つかりません。")
+
+    award = db.get(TeamAward, tournament_id)
+
+    return {"award": award.award if award else ""}
+
+
+class TeamAwardUpdate(BaseModel):
+    award: str = ""
+
+
+@router.put("/api/v1/tournaments/{tournament_id}/team-award")
+def put_team_award(
+    tournament_id: int,
+    payload: TeamAwardUpdate,
+    user: User = Depends(mobile_user),
+    db: Session = Depends(get_db),
+):
+    if db.get(Tournament, tournament_id) is None:
+        raise HTTPException(404, "大会が見つかりません。")
+
+    allowed = {"", "優勝", "準優勝", "第3位", "ベスト8"}
+
+    if payload.award not in allowed:
+        raise HTTPException(422, "順位が正しくありません。")
+
+    existing = db.get(TeamAward, tournament_id)
+
+    if payload.award:
+        if existing:
+            existing.award = payload.award
+        else:
+            db.add(TeamAward(
+                tournament_id=tournament_id,
+                award=payload.award,
+            ))
+    elif existing:
+        db.delete(existing)
+
+    db.commit()
+
+    return {"award": payload.award}
 
 @router.get("/api/public/tournaments/{tournament_id}")
 def public_tournament(tournament_id: int, db: Session = Depends(get_db)):
