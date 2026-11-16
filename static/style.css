@@ -1143,3 +1143,16 @@ input[type="date"]::-webkit-date-and-time-value {
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  .individual-result {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .individual-result p,
+  .individual-result li {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
