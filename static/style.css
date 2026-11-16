@@ -1142,3 +1142,37 @@ input[type="date"]::-webkit-date-and-time-value {
   text-align: center;
   white-space: nowrap;
 }
+
+/* 団体戦の3列配置を統一 */
+.team-header,
+.team-match-row,
+.team-total-row {
+  grid-template-columns: minmax(0, 1fr) 110px minmax(0, 1fr);
+}
+
+/* 電通大側の選手名 */
+.team-match-row .team-home-player {
+  transform: none;
+  padding-left: 0;
+}
+
+/* 相手側の選手名 */
+.team-match-row .team-away-player {
+  transform: none;
+  padding-left: 0;
+}
+
+/* 技の中央配置 */
+.team-center-score .team-technique-result {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* 合計スコアを各チームの列に配置 */
+.team-total-row .home-total {
+  text-align: center;
+}
+
+.team-total-row .away-total {
+  text-align: center;
+}
