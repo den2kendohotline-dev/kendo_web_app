@@ -1143,16 +1143,38 @@ input[type="date"]::-webkit-date-and-time-value {
   white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .individual-result {
+/* ==========================================
+   スマホ用 個人戦表示
+========================================== */
+
+@media (max-width: 700px) {
+
+  .player-result {
+    width: 100%;
     max-width: 100%;
-    min-width: 0;
   }
 
-  .individual-result p,
-  .individual-result li {
+  .individual-match-list {
+    width: 100%;
     max-width: 100%;
-    white-space: normal;
+  }
+
+  .individual-match-row {
+    grid-template-columns: 65px minmax(0, 1fr);
+    column-gap: 6px;
+
+    width: 100%;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .individual-round {
+    white-space: nowrap;
+  }
+
+  .individual-result-text {
+    min-width: 0;
     overflow-wrap: anywhere;
   }
+
 }
