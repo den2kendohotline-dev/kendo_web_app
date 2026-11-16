@@ -443,7 +443,8 @@ def create_mobile_event(payload: EventCreate, user: User = Depends(mobile_user),
     db.flush()
     for i, item in enumerate(payload.entries):
         if not item.player_name.strip():
-            continue
+            if payload.event_type != 'team' or item.result != 'walkover_loss':
+                continue
         db.add(MatchEntry(event_id=e.id, order_index=site_team_entry_order(item.position, i) if payload.event_type == 'team' else i, position=item.position, player_name=item.player_name.strip(), opponent_name=item.opponent_name.strip(), individual_round=item.individual_round, result=item.result, score_for=item.score_for, score_against=item.score_against, detail=item.detail))
     db.commit()
     return {'id': e.id, 'tournament_id': t.id}
@@ -466,7 +467,14 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         raise HTTPException(422, '団体戦と個人戦の区分は変更できません。')
     if not payload.tournament.strip() or payload.event_date is None:
         raise HTTPException(422, '大会名と開催日を入力してください。')
-    if not payload.entries or any(not x.player_name.strip() for x in payload.entries):
+    if not payload.entries or any(
+    not x.player_name.strip()
+    and not (
+        payload.event_type == 'team'
+        and x.result == 'walkover_loss'
+    )
+    for x in payload.entries
+):
         raise HTTPException(422, 'すべての試合で選手を選択してください。')
     if payload.event_type == 'team' and not payload.opponent_team.strip():
         raise HTTPException(422, '対戦校・団体名を入力してください。')
