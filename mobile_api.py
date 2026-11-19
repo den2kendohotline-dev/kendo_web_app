@@ -467,7 +467,7 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         raise HTTPException(422, '団体戦と個人戦の区分は変更できません。')
     if not payload.tournament.strip() or payload.event_date is None:
         raise HTTPException(422, '大会名と開催日を入力してください。')
-    if not payload.entries or any(
+    if (payload.event_type == 'team' and not payload.entries) or any(
     not x.player_name.strip()
     and not (
         payload.event_type == 'team'
@@ -478,6 +478,12 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         raise HTTPException(422, 'すべての試合で選手を選択してください。')
     if payload.event_type == 'team' and not payload.opponent_team.strip():
         raise HTTPException(422, '対戦校・団体名を入力してください。')
+
+    if payload.event_type == 'individual' and not payload.entries:
+        tournament_id = e.tournament_id
+    db.delete(e)
+    db.commit()
+    return {'id': event_id, 'tournament_id': tournament_id}
 
     t = e.tournament_parent
     e.round_name = payload.round_name.strip()
