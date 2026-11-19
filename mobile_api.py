@@ -481,10 +481,10 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
 
     if payload.event_type == 'individual' and not payload.entries:
         tournament_id = e.tournament_id
-    db.delete(e)
-    db.commit()
-    return {'id': event_id, 'tournament_id': tournament_id}
-
+        db.delete(e)
+        db.commit()
+        return {'id': event_id, 'tournament_id': tournament_id}
+    
     t = e.tournament_parent
     e.round_name = payload.round_name.strip()
     e.team_round = payload.team_round
