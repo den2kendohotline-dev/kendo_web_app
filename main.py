@@ -292,23 +292,26 @@ def cleanup_graduated_players() -> None:
 app = FastAPI(title="剣道部 試合結果管理")
 
 # Androidアプリからの通信を許可
+allow_origins=[
+    "http://localhost",
+    "https://localhost",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://uec-kendo-mobile.onrender.com",
+],
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost",
         "https://localhost",
-        "https://uec-kendo-mobile.onrender.com"
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://uec-kendo-mobile.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
-
-app.add_middleware(
-    SessionMiddleware,
-    secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
-    same_site="lax",
-    https_only=False,
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -456,6 +459,7 @@ def tournament_view(
 ) -> dict:
     individual_by_player: dict[str, list[MatchEntry]] = defaultdict(list)
     team_events: list[dict] = []
+    individual_sections: list[dict] = []
 
     players = db.scalars(
         select(Player)
@@ -530,7 +534,6 @@ def tournament_view(
                 }
             )
 
-        individual_sections = []
 
     for player_name, entries in individual_by_player.items():
         entries.sort(
@@ -1487,6 +1490,16 @@ def delete_tournament(
 ):
     tournament = db.get(Tournament, tournament_id)
     if tournament:
+        from mobile_api import IndividualAward, TeamAward
+
+        for award in db.scalars(
+            select(IndividualAward).where(IndividualAward.tournament_id == tournament_id)
+        ).all():
+            db.delete(award)
+        team_award = db.get(TeamAward, tournament_id)
+        if team_award is not None:
+            db.delete(team_award)
+        db.flush()
         db.delete(tournament)
         db.commit()
     return RedirectResponse("/", status_code=303)

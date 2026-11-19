@@ -353,9 +353,9 @@ class EntryCreate(BaseModel):
     player_name: str = ''
     opponent_name: str = ''
     individual_round: str = ''
-    result: str = 'draw'
-    score_for: int = 0
-    score_against: int = 0
+    result: str = Field(default='draw', pattern=r'^(win|loss|draw|walkover_win|walkover_loss)$')
+    score_for: int = Field(default=0, ge=0)
+    score_against: int = Field(default=0, ge=0)
     detail: str = ''
 
 class EventCreate(BaseModel):
@@ -403,7 +403,8 @@ def update_mobile_tournament(tournament_id: int, payload: TournamentCreate, user
         raise HTTPException(409, '同じ大会名・開催日の大会が既に登録されています。')
     t.name = name
     t.event_date = payload.event_date
-    t.venue = payload.venue.strip()
+    if 'venue' in payload.model_fields_set:
+        t.venue = payload.venue.strip()
     db.commit()
     return {'id': t.id, 'name': t.name, 'event_date': t.event_date.isoformat(), 'venue': t.venue}
 
@@ -417,6 +418,14 @@ def delete_mobile_tournament(
     if t is None:
         raise HTTPException(404, '大会が見つかりません。')
 
+    for award in db.scalars(
+        select(IndividualAward).where(IndividualAward.tournament_id == tournament_id)
+    ).all():
+        db.delete(award)
+    team_award = db.get(TeamAward, tournament_id)
+    if team_award is not None:
+        db.delete(team_award)
+    db.flush()
     db.delete(t)
     db.commit()
 
@@ -426,6 +435,8 @@ def create_mobile_event(payload: EventCreate, user: User = Depends(mobile_user),
         raise HTTPException(422, '試合区分が正しくありません。')
     if not payload.entries or not any(x.player_name.strip() for x in payload.entries):
         raise HTTPException(422, '選手を1人以上入力してください。')
+    if payload.event_type == 'team' and not payload.opponent_team.strip():
+        raise HTTPException(422, '対戦校・団体名を入力してください。')
     if payload.tournament_id is not None:
         t = db.get(Tournament, payload.tournament_id)
         if t is None:
@@ -465,8 +476,8 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         raise HTTPException(404, '試合が見つかりません。')
     if payload.event_type != e.event_type:
         raise HTTPException(422, '団体戦と個人戦の区分は変更できません。')
-    if not payload.tournament.strip() or payload.event_date is None:
-        raise HTTPException(422, '大会名と開催日を入力してください。')
+    if payload.tournament_id is not None and payload.tournament_id != e.tournament_id:
+        raise HTTPException(422, '試合の所属大会は変更できません。')
     if (payload.event_type == 'team' and not payload.entries) or any(
     not x.player_name.strip()
     and not (
@@ -484,7 +495,7 @@ def update_mobile_event(event_id: int, payload: EventCreate, user: User = Depend
         db.delete(e)
         db.commit()
         return {'id': event_id, 'tournament_id': tournament_id}
-    
+
     t = e.tournament_parent
     e.round_name = payload.round_name.strip()
     e.team_round = payload.team_round
