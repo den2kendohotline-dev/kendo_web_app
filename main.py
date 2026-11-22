@@ -294,7 +294,7 @@ app = FastAPI(title="剣道部 試合結果管理")
 # セッション認証の設定
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.environ["SESSION_SECRET_KEY"],
+    secret_key=os.environ["SECRET_KEY"],
     https_only=True,
     same_site="lax",
 )
