@@ -291,15 +291,15 @@ def cleanup_graduated_players() -> None:
 
 app = FastAPI(title="剣道部 試合結果管理")
 
-# Androidアプリからの通信を許可
-allow_origins=[
-    "http://localhost",
-    "https://localhost",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://uec-kendo-mobile.onrender.com",
-],
+# セッション認証の設定
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.environ["SESSION_SECRET_KEY"],
+    https_only=True,
+    same_site="lax",
+)
 
+# Androidアプリからの通信を許可
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
